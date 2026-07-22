@@ -19,41 +19,39 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png', 
   maxZoom: 19
 }).addTo(map);
 
-// custom ISS icon
+// custom ISS icon — animated satellite emoji with a pulsing radar ring
 const issIcon = L.divIcon({
   className: 'iss-icon',
-  html: `<div style="
-      width:14px;height:14px;border-radius:50%;
-      background:#ffb020;box-shadow:0 0 12px 4px rgba(255,176,32,0.7);
-      border:2px solid #0a0f1a;"></div>`,
-  iconSize: [18, 18],
-  iconAnchor: [9, 9]
+  html: `<div class="iss-marker">
+      <span class="iss-pulse-ring"></span>
+      <span class="iss-emoji">🛰️</span>
+    </div>`,
+  iconSize: [42, 42],
+  iconAnchor: [21, 21]
 });
 
 const issMarker = L.marker([0, 0], { icon: issIcon, zIndexOffset: 1000 }).addTo(map);
 
 const trail = L.polyline([], {
-  color: '#4fd8e0',
+  color: '#ff7d9c',
   weight: 2,
-  opacity: 0.6,
-  dashArray: '1 6'
+  opacity: 0.7,
+  dashArray: '1 6',
+  className: 'iss-trail-path'
 }).addTo(map);
 
 let terminatorLayer = null;
 const trailPoints = [];
 
 // ---------- Day/night terminator ----------
-// Approximate subsolar point, then draw the great-circle 90° from it.
 function getSubsolarPoint(date) {
   const rad = Math.PI / 180;
   const dayMs = 1000 * 60 * 60 * 24;
   const start = Date.UTC(date.getUTCFullYear(), 0, 0);
   const dayOfYear = Math.floor((date - start) / dayMs);
 
-  // Solar declination (approximation)
   const decl = -23.44 * Math.cos(rad * (360 / 365) * (dayOfYear + 10));
 
-  // Equation of time correction (minutes) — simplified
   const B = (360 / 365) * (dayOfYear - 81) * rad;
   const eot = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
 
@@ -70,10 +68,8 @@ function buildTerminatorPolygon(date) {
   const deg = 180 / Math.PI;
   const points = [];
 
-  // Trace the circle 90 degrees away from the subsolar point
   for (let i = 0; i <= 360; i += 2) {
     const bearing = i * rad;
-    const latRad = 0; // 90 degrees from subsolar point along varying bearings
     const subLatRad = subLat * rad;
     const subLonRad = subLon * rad;
     const angDist = 90 * rad;
@@ -99,7 +95,6 @@ function drawTerminator() {
   if (terminatorLayer) map.removeLayer(terminatorLayer.night);
   if (terminatorLayer && terminatorLayer.sun) map.removeLayer(terminatorLayer.sun);
 
-  // Night-side shading: polygon from terminator line wrapped to cover the anti-solar hemisphere
   const night = L.polygon(points, {
     color: 'transparent',
     fillColor: '#000000',
@@ -197,7 +192,8 @@ function cycle() {
 cycle();
 drawTerminator();
 setInterval(cycle, REFRESH_MS);
-setInterval(drawTerminator, 60 * 1000); // reposition sun/terminator every minute
+setInterval(drawTerminator, 60 * 1000);
 setInterval(updateClock, 1000);
 setInterval(tickProgress, 100);
 updateClock();
+
