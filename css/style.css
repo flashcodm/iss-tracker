@@ -1,11 +1,11 @@
 :root {
-  --bg: #0a0f1a;
-  --panel: #111a2c;
-  --panel-border: #223151;
-  --text: #e7edf7;
-  --muted: #6b7a99;
-  --amber: #ffb020;
-  --cyan: #4fd8e0;
+  --bg: #16161a;
+  --panel: #1e1e23;
+  --panel-border: #2d2d34;
+  --text: #ececef;
+  --muted: #85858f;
+  --amber: #b399ff;
+  --cyan: #ff7d9c;
   --danger: #ff5d5d;
   --font-display: 'Barlow Condensed', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -52,7 +52,7 @@ body {
   justify-content: space-between;
   padding: 14px 24px;
   border-bottom: 1px solid var(--panel-border);
-  background: linear-gradient(to bottom, #0c1424, #0a0f1a);
+  background: linear-gradient(to bottom, #1a1a1f, #16161a);
   z-index: 10;
 }
 
@@ -115,17 +115,17 @@ body {
 }
 
 #map {
-  background: #0a0f1a;
+  background: #16161a;
   height: 100%;
   width: 100%;
 }
 
 /* Leaflet dark overrides */
 .leaflet-container {
-  background: #0a0f1a;
+  background: #16161a;
 }
 .leaflet-control-attribution {
-  background: rgba(10,15,26,0.7) !important;
+  background: rgba(22,22,26,0.7) !important;
   color: var(--muted) !important;
   font-family: var(--font-mono);
   font-size: 9px !important;
@@ -243,6 +243,52 @@ body {
 
 .sep { color: var(--panel-border); }
 
+/* ---------- ISS MARKER ---------- */
+.iss-marker {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.iss-emoji {
+  font-size: 24px;
+  display: inline-block;
+  filter: drop-shadow(0 0 5px var(--amber)) drop-shadow(0 0 12px rgba(179,153,255,0.55));
+  animation: iss-bob 3.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.iss-pulse-ring {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber);
+  animation: iss-pulse 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+@keyframes iss-bob {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-3px) rotate(8deg); }
+}
+
+@keyframes iss-pulse {
+  0% { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.iss-trail-path {
+  animation: trail-flow 1s linear infinite;
+}
+
+@keyframes trail-flow {
+  to { stroke-dashoffset: -14; }
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 760px) {
   .layout {
@@ -260,13 +306,12 @@ body {
   .hud-bottom { flex-wrap: wrap; }
 }
 
-/* reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .brand-mark, .dot { animation: none; }
+  .brand-mark, .dot, .iss-emoji, .iss-pulse-ring, .iss-trail-path { animation: none; }
 }
 
-/* keyboard focus visibility */
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--cyan);
   outline-offset: 2px;
 }
+ 
