@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORBITAL // ISS Ground Track</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+
+  <header class="hud-top">
+    <div class="brand">
+      <span class="brand-mark">◈</span>
+      <div class="brand-text">
+        <h1>ORBITAL</h1>
+        <span class="brand-sub">ISS GROUND TRACK · LIVE</span>
+      </div>
+    </div>
+    <div class="clock-block">
+      <span class="clock-label">UTC</span>
+      <span id="utc-clock" class="clock-value">--:--:--</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div id="map"></div>
+
+    <aside class="telemetry" id="telemetry">
+      <div class="telemetry-header">
+        <span class="dot" id="status-dot"></span>
+        <span id="status-text">ACQUIRING SIGNAL…</span>
+      </div>
+
+      <div class="telemetry-grid">
+        <div class="tele-item">
+          <span class="tele-label">Latitude</span>
+          <span class="tele-value" id="val-lat">—</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Longitude</span>
+          <span class="tele-value" id="val-lon">—</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Altitude</span>
+          <span class="tele-value" id="val-alt">—</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Velocity</span>
+          <span class="tele-value" id="val-vel">—</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Visibility</span>
+          <span class="tele-value" id="val-vis">—</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Orbit / day</span>
+          <span class="tele-value">~15.5</span>
+        </div>
+      </div>
+
+      <div class="telemetry-footer">
+        <span class="tele-label">Next refresh</span>
+        <div class="progress-track"><div class="progress-fill" id="refresh-bar"></div></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="hud-bottom">
+    <span>Position data: wheretheiss.at API</span>
+    <span class="sep">·</span>
+    <span>Map: OpenStreetMap / Leaflet</span>
+    <span class="sep">·</span>
+    <span>Trail = last ~90 min of ground track</span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
